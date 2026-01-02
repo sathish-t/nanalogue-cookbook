@@ -1,0 +1,18 @@
+[book]
+title = "Nanalogue cookbook"
+authors = ["Sathish Thiyagarajan"]
+language = "en"
+description = "Companion documentation site for the nanalogue/pynanalogue packages"
+
+[output.html]
+default-theme = "rust"
+preferred-dark-theme = "navy"
+smart-punctuation = true
+definition-lists = true
+admonitions = true
+mathjax-support = false
+no-section-label = true 
+git-repository-url = "https://github.com/sathish-t/nanalogue-cookbook"
+git-repository-icon = "fab-github"
+edit-url-template = "https://github.com/sathish-t/nanalogue-cookbook/edit/main/{path}"
+site-url = "https://www.nanalogue.com/"

@@ -25,11 +25,20 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: ${{ secrets.AWS_REGION }}
-      # Hello from AWS: WhoAmI
-      - name: Sts GetCallerIdentity
+      # Install mdbook
+      - name: Setup mdbook
+        uses: peaceiris/actions-mdbook@v2
+        with:
+          mdbook-version: 'latest'
+      # Delete all objects from S3 bucket
+      - name: Delete all objects from S3 bucket
         run: |
-          aws sts get-caller-identity
-      # List objects in bucket
-      - name: list objects in bucket
+          aws s3 rm s3://${{ secrets.AWS_BUCKET }} --recursive
+      # Build the book
+      - name: Build book with mdbook
         run: |
-          aws s3 ls s3://${{ secrets.AWS_BUCKET }}
+          mdbook build
+      # Sync book folder to S3 bucket root
+      - name: Sync book to S3 bucket
+        run: |
+          aws s3 sync book/ s3://${{ secrets.AWS_BUCKET }}/
