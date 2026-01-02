@@ -1,3 +1,4 @@
+# This file copied and edited from AWS documentation from one of AWS's documentation sites
 # This is a basic workflow to help you get started with Actions
 name: Connect to an AWS role from a GitHub repository
 
@@ -19,7 +20,7 @@ jobs:
       - name: Git clone the repository
         uses: actions/checkout@v3
       - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v1.7.0
+        uses: aws-actions/configure-aws-credentials@v5.1.1
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
@@ -28,3 +29,7 @@ jobs:
       - name: Sts GetCallerIdentity
         run: |
           aws sts get-caller-identity
+      # List objects in bucket
+      - name: list objects in bucket
+        run: |
+          aws s3 ls s3://${{ secrets.AWS_BUCKET }}
