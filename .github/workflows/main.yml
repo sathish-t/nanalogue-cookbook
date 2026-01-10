@@ -14,7 +14,7 @@ permissions:
       id-token: write   # This is required for requesting the JWT
       contents: read    # This is required for actions/checkout
 jobs:
-  AssumeRoleAndCallIdentity:
+  make_book_and_upload_to_s3:
     runs-on: ubuntu-latest
     steps:
       - name: Git clone the repository
@@ -25,19 +25,36 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: ${{ secrets.AWS_REGION }}
+      # Install Rust and nanalogue CLI
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: Install nanalogue CLI
+        run: cargo install nanalogue
+      # Install Python and pynanalogue
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pynanalogue
+        run: pip3 install pynanalogue
+      # Generate documentation
+      - name: Generate CLI documentation
+        run: python3 scripts/generate_cli_docs.py
+      - name: Generate Python API documentation
+        run: python3 scripts/generate_python_docs.py
       # Install mdbook
       - name: Setup mdbook
         uses: peaceiris/actions-mdbook@v2
         with:
           mdbook-version: 'latest'
-      # Delete all objects from S3 bucket
-      - name: Delete all objects from S3 bucket
-        run: |
-          aws s3 rm s3://${{ secrets.AWS_BUCKET }} --recursive
       # Build the book
       - name: Build book with mdbook
         run: |
           mdbook build
+      # Delete all objects from S3 bucket
+      - name: Delete all objects from S3 bucket
+        run: |
+          aws s3 rm s3://${{ secrets.AWS_BUCKET }} --recursive
       # Sync book folder to S3 bucket root
       - name: Sync book to S3 bucket
         run: |
