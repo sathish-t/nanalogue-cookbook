@@ -19,7 +19,7 @@ def get_help_text(command):
         )
         return result.stdout if result.returncode == 0 else result.stderr
     except subprocess.TimeoutExpired:
-        return f"Error: Command timed out after 30 seconds"
+        return "Error: Command timed out after 30 seconds"
     except FileNotFoundError:
         return f"Error: Command not found - {' '.join(command)}"
     except Exception as e:
@@ -51,8 +51,9 @@ def parse_subcommands(help_text):
             if re.match(r'^[A-Z][a-z]+:', line):
                 break
 
-            # Extract command name (first word, indented)
-            match = re.match(r'^\s+([a-z][a-z0-9_-]*)\s+', line)
+            # Extract command name (first word with exactly 2 spaces indent, followed by whitespace)
+            # This prevents matching wrapped description lines which have more indentation
+            match = re.match(r'^  ([a-z][a-z0-9_-]+)\s+', line)
             if match:
                 subcommands.append(match.group(1))
 
@@ -95,7 +96,7 @@ def main():
     markdown_lines = [
         "# nanalogue CLI Commands Reference",
         "",
-        "> **Note**: This file is auto-generated. Do not edit manually.",
+        "> **Note**: This file is auto-generated.",
         "",
         "## Main Command",
         "",

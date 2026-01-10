@@ -7,6 +7,102 @@ import sys
 from pathlib import Path
 
 
+def format_signature(name, sig):
+    """Format a function signature with proper line breaks for readability."""
+    sig_str = f"{name}{sig}"
+
+    # If signature is short enough, return as-is
+    if len(sig_str) <= 80:
+        return sig_str
+
+    # For long signatures, format with line breaks after each parameter
+    params = []
+    try:
+        for param_name, param in sig.parameters.items():
+            params.append(str(param))
+    except Exception:
+        return sig_str
+
+    if not params:
+        return sig_str
+
+    # Build formatted signature with line breaks
+    lines = [f"{name}("]
+    for i, param in enumerate(params):
+        if i < len(params) - 1:
+            lines.append(f"    {param},")
+        else:
+            lines.append(f"    {param}")
+    lines.append(")")
+
+    return "\n".join(lines)
+
+
+def format_docstring(docstring):
+    """Format docstring with proper markdown, preserving structure."""
+    if not docstring:
+        return ""
+
+    lines = docstring.split('\n')
+    formatted_lines = []
+    in_args_section = False
+    current_param = []
+
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+
+        # Detect section headers like "# Args", "# Returns", etc.
+        if stripped.startswith('#') and stripped[1:].strip() in ['Args', 'Arguments', 'Parameters',
+                                                                  'Returns', 'Yields', 'Raises',
+                                                                  'Note', 'Notes', 'Example',
+                                                                  'Examples', 'Errors', 'Example output']:
+            # If we were building a parameter, add it first
+            if current_param:
+                formatted_lines.append("- " + " ".join(current_param))
+                formatted_lines.append("")
+                current_param = []
+
+            section_name = stripped[1:].strip()
+            in_args_section = (section_name in ['Args', 'Arguments', 'Parameters'])
+            # Make section headers bold
+            formatted_lines.append(f"**{section_name}**")
+            formatted_lines.append("")  # Add blank line after header
+        elif in_args_section and stripped:
+            # Check if this line starts a new parameter (has format "param_name (type):")
+            # Look for pattern: word followed by (type):
+            if ('(' in stripped and '):' in stripped and
+                not stripped.startswith('-') and not stripped.startswith('*')):
+                # This is a new parameter line
+                if current_param:
+                    # Save previous parameter
+                    formatted_lines.append("- " + " ".join(current_param))
+                    formatted_lines.append("")
+                # Start new parameter
+                current_param = [stripped]
+            elif current_param:
+                # This is a continuation of the current parameter
+                current_param.append(stripped)
+            else:
+                # Not in a parameter yet, just add the line
+                formatted_lines.append(line)
+        else:
+            # Not in args section, or empty line
+            if current_param:
+                # End of args section, save current parameter
+                formatted_lines.append("- " + " ".join(current_param))
+                formatted_lines.append("")
+                current_param = []
+                in_args_section = False
+            formatted_lines.append(line)
+
+    # Handle any remaining parameter
+    if current_param:
+        formatted_lines.append("- " + " ".join(current_param))
+        formatted_lines.append("")
+
+    return "\n".join(formatted_lines)
+
+
 def get_all_members(module):
     """Get all public functions and classes from a module."""
     members = []
@@ -36,7 +132,7 @@ def format_function_docs(name, func):
     try:
         sig = inspect.signature(func)
         lines.append("```python")
-        lines.append(f"{name}{sig}")
+        lines.append(format_signature(name, sig))
         lines.append("```")
         lines.append("")
     except Exception:
@@ -46,7 +142,8 @@ def format_function_docs(name, func):
     # Add docstring
     docstring = inspect.getdoc(func)
     if docstring:
-        lines.append(docstring)
+        formatted_doc = format_docstring(docstring)
+        lines.append(formatted_doc)
         lines.append("")
     else:
         lines.append("*No documentation available.*")
@@ -75,7 +172,6 @@ def format_class_docs(name, cls):
         lines.append("### Methods")
         lines.append("")
         for method_name, method in sorted(methods):
-            method_lines = format_function_docs(f"{name}.{method_name}", method)
             # Indent method docs to show hierarchy
             lines.extend([f"#### `{method_name}`", ""])
 
@@ -83,7 +179,7 @@ def format_class_docs(name, cls):
             try:
                 sig = inspect.signature(method)
                 lines.append("```python")
-                lines.append(f"{method_name}{sig}")
+                lines.append(format_signature(method_name, sig))
                 lines.append("```")
                 lines.append("")
             except Exception:
@@ -92,7 +188,8 @@ def format_class_docs(name, cls):
             # Add docstring
             method_doc = inspect.getdoc(method)
             if method_doc:
-                lines.append(method_doc)
+                formatted_doc = format_docstring(method_doc)
+                lines.append(formatted_doc)
                 lines.append("")
             else:
                 lines.append("*No documentation available.*")
@@ -120,7 +217,7 @@ def main():
     markdown_lines = [
         "# pynanalogue Python API Reference",
         "",
-        "> **Note**: This file is auto-generated. Do not edit manually.",
+        "> **Note**: This file is auto-generated.",
         "",
     ]
 
