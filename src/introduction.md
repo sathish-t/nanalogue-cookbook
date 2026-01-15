@@ -22,13 +22,12 @@ This documentation site is under active development.
 
 This book is divided into two parts, based on two out of the following three ways to use
 nanalogue:
-- as a command line interface i.e. a tool that can be run from the terminal.
-- as a rust library i.e. if you write rust code, you can benefit from nanalogue's functions.
+- as a command line interface i.e. a tool that can be run from the terminal. See [here](./cli.md).
 - as a python library i.e. if you write python code, you can use pynanalogue, a wrapper around
-  a subset of nanalogue's functions.
-
-If you are a rust developer looking to use nanalogue as a rust library,
-please head over to [docs.rs](https://docs.rs/nanalogue/latest/nanalogue_core/). 
+  a subset of nanalogue's functions. See [here](./python.md).
+- as a rust library i.e. if you write rust code, you can benefit from nanalogue's functions.
+  If you are a rust developer looking to use nanalogue as a rust library,
+  please head over to [docs.rs](https://docs.rs/nanalogue/latest/nanalogue_core/). 
 
 ## Installation
 
