@@ -4,6 +4,7 @@
 
 - [CLI usage](./cli.md)
   - [CLI Commands Reference](./all_cli_commands.md)
+  - [Extract raw mod calls](./cli/extract_raw_mod_data.md)
 - [Python usage](./python.md)
   - [Python API Reference](./all_python_functions.md)
 - [Acknowledgments](./acknowledgments.md)
