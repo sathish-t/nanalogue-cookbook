@@ -4,7 +4,7 @@ If you are interested in extracting raw mod calls, please use the following comm
 You need to have the `jq` package installed.
 
 ```bash
-nanalogue read-info --detailed $bam_resource | jq '.[].mod_table[].data[][2]'
+nanalogue read-info --detailed input.bam | jq '.[].mod_table[].data[][2]'
 ```
 
 An example output from this command can look like the following.
@@ -43,8 +43,8 @@ This is a variant of the command above that prints read id, contig, position alo
 position along read and modification quality.
 
 ```bash
-nanalogue read-info --detailed $bam_resource |\
-    jq -r '.[] | .read_id as $rid | (.alignment.contig // "N/A") as $contig | .mod_table[].data[] | [$rid, $contig, .[1], .[0], .[2]] | @tsv'  
+nanalogue read-info --detailed input.bam |\
+    jq -r '.[] | .read_id as $rid | (.alignment.contig // "N/A") as $contig | .mod_table[].data[] | [$rid, $contig, .[1], .[0], .[2]] | @tsv'
 ```
 
 ```text

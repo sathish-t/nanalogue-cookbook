@@ -31,6 +31,48 @@ nanalogue:
 
 ## Installation
 
-General installation methods such as `cargo install` and `pip install` should work.
-For the most up to date information, please consult the README files from the
-Github links above.
+### Using Cargo
+
+Run the following command to install or update `nanalogue` for usage on the command line:
+
+```bash
+cargo install nanalogue
+```
+
+`cargo` is the Rust package manager. If you do not have `cargo`,
+follow these [instructions](https://doc.rust-lang.org/cargo/getting-started/installation.html)
+to get it. On Linux and macOS systems, the install command is as simple as
+`curl https://sh.rustup.rs -sSf | sh`
+
+If the `cargo install` command fails, try using the `--locked` flag:
+
+```bash
+cargo install nanalogue --locked
+```
+
+This uses the exact versions of dependencies specified in the package's `Cargo.lock` file,
+and fixes install problems due to newer packages.
+
+### Using Docker
+
+You can also use `nanalogue` via Docker:
+
+```bash
+docker pull dockerofsat/nanalogue:latest
+```
+
+### Pre-built Binaries
+
+Pre-built binaries for macOS and Linux are available from:
+
+- **GitHub Releases**: Official release binaries can be downloaded from the [Releases page](https://github.com/DNAReplicationLab/nanalogue/releases). Each release includes binaries for multiple platforms.
+
+- **GitHub Actions Artifacts**: Binaries built from the latest code are available as artifacts from the [Build Release Binaries workflow](https://github.com/DNAReplicationLab/nanalogue/actions/workflows/build-binaries.yml). Download the binary artifact for your platform (macOS, musl Linux, manylinux variants for different glibc versions).
+
+### Python Library
+
+To install the Python wrapper `pynanalogue`:
+
+```bash
+pip install pynanalogue
+```

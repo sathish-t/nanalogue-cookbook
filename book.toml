@@ -16,3 +16,6 @@ git-repository-url = "https://github.com/sathish-t/nanalogue-cookbook"
 git-repository-icon = "fab-github"
 edit-url-template = "https://github.com/sathish-t/nanalogue-cookbook/edit/main/{path}"
 site-url = "https://www.nanalogue.com/"
+
+[output.linkcheck]
+warning-policy = "error"

@@ -35,16 +35,27 @@ jobs:
           python-version: '3.11'
       - name: Install pynanalogue
         run: pip3 install pynanalogue
+      # Install system dependencies for markdown tests
+      - name: Install samtools and jq
+        run: sudo apt-get update && sudo apt-get install -y samtools jq
+      # Test markdown code examples
+      - name: Test markdown examples
+        run: python3 scripts/test_markdown_examples.py
+      # Generate auto-generated output sections in markdown
+      - name: Generate markdown outputs
+        run: python3 scripts/generate_markdown_outputs.py
       # Generate documentation
       - name: Generate CLI documentation
         run: python3 scripts/generate_cli_docs.py
       - name: Generate Python API documentation
         run: python3 scripts/generate_python_docs.py
-      # Install mdbook
+      # Install mdbook and mdbook-linkcheck
       - name: Setup mdbook
         uses: peaceiris/actions-mdbook@v2
         with:
           mdbook-version: 'latest'
+      - name: Install mdbook-linkcheck
+        run: cargo install mdbook-linkcheck
       # Build the book
       - name: Build book with mdbook
         run: |

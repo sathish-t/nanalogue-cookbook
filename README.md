@@ -8,6 +8,8 @@ to extract and process this information. This repository illustrates nanalogue's
 commands. The site generated from this repository can be seen [here](https://www.nanalogue.com).
 These materials are under development.
 
+For contributors, see [INSTRUCTIONS.md](INSTRUCTIONS.md) for documentation on the automated testing and generation systems.
+
 # Acknowledgments
 
 This software was developed at the Earlham Institute in the UK.

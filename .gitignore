@@ -4,3 +4,9 @@ index.html
 # Auto-generated documentation
 src/all_cli_commands.md
 src/all_python_functions.md
+
+# python virtual environment
+venv
+
+# Python temp directories
+__pycache__

@@ -20,3 +20,4 @@ Please see the CLI commands reference shown above.
 ## Illustration of commands
 
 - [Extract raw mod calls](./cli/extract_raw_mod_data.md)
+- [Finding highly modified reads](./cli/finding_highly_modified_reads.md)
