@@ -18,7 +18,7 @@ def format_signature(name, sig):
     # For long signatures, format with line breaks after each parameter
     params = []
     try:
-        for param_name, param in sig.parameters.items():
+        for param in sig.parameters.values():
             params.append(str(param))
     except Exception:
         return sig_str
@@ -38,6 +38,28 @@ def format_signature(name, sig):
     return "\n".join(lines)
 
 
+def escape_markdown_brackets(text):
+    """Escape square brackets that could be mistaken for markdown links.
+
+    Preserves brackets inside backticks (inline code).
+    """
+    result = []
+    in_code = False
+
+    for char in text:
+        if char == '`':
+            in_code = not in_code
+            result.append(char)
+        elif not in_code and char == '[':
+            result.append('\\[')
+        elif not in_code and char == ']':
+            result.append('\\]')
+        else:
+            result.append(char)
+
+    return ''.join(result)
+
+
 def format_docstring(docstring):
     """Format docstring with proper markdown, preserving structure."""
     if not docstring:
@@ -48,7 +70,7 @@ def format_docstring(docstring):
     in_args_section = False
     current_param = []
 
-    for i, line in enumerate(lines):
+    for line in lines:
         stripped = line.strip()
 
         # Detect section headers like "# Args", "# Returns", etc.
@@ -100,7 +122,19 @@ def format_docstring(docstring):
         formatted_lines.append("- " + " ".join(current_param))
         formatted_lines.append("")
 
-    return "\n".join(formatted_lines)
+    # Escape brackets outside of fenced code blocks
+    result_lines = []
+    in_code_block = False
+    for line in formatted_lines:
+        if line.strip().startswith('```'):
+            in_code_block = not in_code_block
+            result_lines.append(line)
+        elif in_code_block:
+            result_lines.append(line)
+        else:
+            result_lines.append(escape_markdown_brackets(line))
+
+    return "\n".join(result_lines)
 
 
 def get_all_members(module):

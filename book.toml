@@ -19,3 +19,4 @@ site-url = "https://www.nanalogue.com/"
 
 [output.linkcheck]
 warning-policy = "error"
+optional = true
