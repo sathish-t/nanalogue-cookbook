@@ -17,7 +17,7 @@ The script `scripts/test_markdown_examples.py` extracts and runs code blocks fro
 ### How it works
 
 1. Finds all `.md` files in `src/`
-2. Extracts fenced code blocks (```bash or ```python)
+2. Extracts fenced code blocks marked as `bash` or `python`
 3. Simulates test BAM files using `pynanalogue`
 4. Runs each code block and verifies it exits successfully
 
