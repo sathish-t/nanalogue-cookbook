@@ -38,22 +38,28 @@ def format_signature(name, sig):
     return "\n".join(lines)
 
 
-def escape_markdown_brackets(text):
-    """Escape square brackets that could be mistaken for markdown links.
+def escape_markdown_brackets(text: str) -> str:
+    """Escape square brackets using HTML entities to prevent markdown link parsing.
 
     Preserves brackets inside backticks (inline code).
     """
     result = []
-    in_code = False
+    in_inline_code = False
 
     for char in text:
         if char == '`':
-            in_code = not in_code
+            in_inline_code = not in_inline_code
             result.append(char)
-        elif not in_code and char == '[':
-            result.append('\\[')
-        elif not in_code and char == ']':
-            result.append('\\]')
+            continue
+
+        if in_inline_code:
+            result.append(char)
+            continue
+
+        if char == '[':
+            result.append('&#91;')
+        elif char == ']':
+            result.append('&#93;')
         else:
             result.append(char)
 
@@ -122,14 +128,17 @@ def format_docstring(docstring):
         formatted_lines.append("- " + " ".join(current_param))
         formatted_lines.append("")
 
-    # Escape brackets outside of fenced code blocks
+    # Escape brackets outside of fenced code blocks (``` delimited sections)
     result_lines = []
-    in_code_block = False
+    in_fenced_code_block = False
+
     for line in formatted_lines:
         if line.strip().startswith('```'):
-            in_code_block = not in_code_block
+            in_fenced_code_block = not in_fenced_code_block
             result_lines.append(line)
-        elif in_code_block:
+            continue
+
+        if in_fenced_code_block:
             result_lines.append(line)
         else:
             result_lines.append(escape_markdown_brackets(line))
