@@ -63,7 +63,15 @@ docker pull dockerofsat/nanalogue:latest
 
 ### Pre-built Binaries
 
-Pre-built binaries for macOS and Linux are available from:
+The easiest way to install pre-built binaries is using the install script:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DNAReplicationLab/nanalogue/main/install.sh | sh
+```
+
+The script requires `curl` (or `wget`), `unzip`, `jq`, and `sha256sum` (or `shasum`).
+
+Alternatively, pre-built binaries for macOS and Linux are available from:
 
 - **GitHub Releases**: Official release binaries can be downloaded from the [Releases page](https://github.com/DNAReplicationLab/nanalogue/releases). Each release includes binaries for multiple platforms.
 

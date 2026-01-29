@@ -43,15 +43,25 @@ The script `scripts/generate_markdown_outputs.py` keeps example output in sync w
 
 ### How it works
 
-1. Finds markers in markdown files:
+1. Finds markers in markdown files (two variants available):
+
+   **Truncated output (max 5 lines):**
    ```markdown
    <!-- AUTO-GENERATED:START -->
    content here will be replaced
    <!-- AUTO-GENERATED:END -->
    ```
+
+   **Full output (no truncation):**
+   ```markdown
+   <!-- AUTO-GENERATED-FULL:START -->
+   content here will be replaced
+   <!-- AUTO-GENERATED-FULL:END -->
+   ```
+
 2. Looks at the bash code block immediately before the marker
 3. Runs the command with simulated test data
-4. Replaces the content between markers with actual output (truncated to 5 lines)
+4. Replaces the content between markers with actual output
 
 ### Running locally
 
@@ -74,7 +84,9 @@ To add a new auto-generated output section:
    ```
    ````
 
-2. Add the markers below it:
+2. Add the markers below it. Use `AUTO-GENERATED` for truncated output (5 lines max) or `AUTO-GENERATED-FULL` for complete output:
+
+   **Truncated (for long outputs):**
    ````markdown
    **Example output:**
    <!-- AUTO-GENERATED:START -->
@@ -82,6 +94,16 @@ To add a new auto-generated output section:
    placeholder content
    ```
    <!-- AUTO-GENERATED:END -->
+   ````
+
+   **Full (for short outputs you want to show completely):**
+   ````markdown
+   **Example output:**
+   <!-- AUTO-GENERATED-FULL:START -->
+   ```
+   placeholder content
+   ```
+   <!-- AUTO-GENERATED-FULL:END -->
    ````
 
 3. Run the script to populate the output:

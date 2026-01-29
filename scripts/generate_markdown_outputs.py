@@ -5,10 +5,15 @@ Generate auto-generated output sections in markdown documentation.
 Finds markers in markdown files and replaces content between them with
 actual command output from running the code block above the marker.
 
-Markers:
+Markers (truncated to 5 lines):
     <!-- AUTO-GENERATED:START -->
     content to be replaced
     <!-- AUTO-GENERATED:END -->
+
+Markers (full output, no truncation):
+    <!-- AUTO-GENERATED-FULL:START -->
+    content to be replaced
+    <!-- AUTO-GENERATED-FULL:END -->
 
 Usage:
     python generate_markdown_outputs.py [markdown_files...]
@@ -22,15 +27,37 @@ import re
 import subprocess
 import sys
 import tempfile
+from dataclasses import dataclass
 from pathlib import Path
 
 import pynanalogue
 
 COMMAND_TIMEOUT_SECONDS = 60
 REPO_ROOT = Path(__file__).parent.parent.resolve()
-START_MARKER = "<!-- AUTO-GENERATED:START -->"
-END_MARKER = "<!-- AUTO-GENERATED:END -->"
 OUTPUT_FILES = ['hypermethylated_reads.txt', 'hypermethylated.bam', 'densities.tsv']
+DEFAULT_TRUNCATE_LINES = 5
+
+
+@dataclass
+class MarkerConfig:
+    """Configuration for an auto-generation marker type."""
+    start: str
+    end: str
+    max_lines: int | None
+
+
+MARKERS = [
+    MarkerConfig(
+        start='<!-- AUTO-GENERATED:START -->',
+        end='<!-- AUTO-GENERATED:END -->',
+        max_lines=DEFAULT_TRUNCATE_LINES,
+    ),
+    MarkerConfig(
+        start='<!-- AUTO-GENERATED-FULL:START -->',
+        end='<!-- AUTO-GENERATED-FULL:END -->',
+        max_lines=None,
+    ),
+]
 
 
 def create_test_data(work_dir: Path) -> dict[str, Path]:
@@ -90,8 +117,16 @@ def prepare_bash_code(code: str, test_files: dict[str, Path], work_dir: Path) ->
     return prepared
 
 
-def run_bash_command(code: str, work_dir: Path) -> tuple[bool, str, str]:
-    """Run a bash command and return (success, stdout, stderr)."""
+@dataclass
+class CommandResult:
+    """Result of running a bash command."""
+    success: bool
+    stdout: str
+    stderr: str
+
+
+def run_bash_command(code: str, work_dir: Path) -> CommandResult:
+    """Run a bash command and return the result."""
     env = {**os.environ, 'HOME': str(work_dir)}
 
     try:
@@ -103,11 +138,19 @@ def run_bash_command(code: str, work_dir: Path) -> tuple[bool, str, str]:
             cwd=REPO_ROOT,
             env=env
         )
-        return (result.returncode == 0, result.stdout, result.stderr)
+        return CommandResult(
+            success=result.returncode == 0,
+            stdout=result.stdout,
+            stderr=result.stderr
+        )
     except subprocess.TimeoutExpired:
-        return (False, "", f"Command timed out after {COMMAND_TIMEOUT_SECONDS} seconds")
+        return CommandResult(
+            success=False,
+            stdout="",
+            stderr=f"Command timed out after {COMMAND_TIMEOUT_SECONDS} seconds"
+        )
     except Exception as e:
-        return (False, "", str(e))
+        return CommandResult(success=False, stdout="", stderr=str(e))
 
 
 def find_code_block_before_marker(content: str, marker_pos: int) -> str | None:
@@ -122,29 +165,27 @@ def find_code_block_before_marker(content: str, marker_pos: int) -> str | None:
     return matches[-1].group(1).strip()
 
 
-def format_output(stdout: str, max_lines: int = 5) -> str:
-    """Format command output, truncating if necessary."""
+def format_output(stdout: str, max_lines: int | None = 5) -> str:
+    """Format command output, truncating if necessary. max_lines=None means no truncation."""
     output_lines = stdout.strip().split('\n')
-    if len(output_lines) > max_lines:
+    if max_lines is not None and len(output_lines) > max_lines:
         output_lines = output_lines[:max_lines] + ['...']
     return '\n'.join(output_lines)
 
 
-def process_markdown_file(
-    file_path: Path,
+def process_marker(
+    content: str,
+    marker: MarkerConfig,
     test_files: dict[str, Path],
     work_dir: Path,
-    dry_run: bool = False
-) -> tuple[bool, int]:
-    """Process a markdown file, replacing auto-generated sections."""
-    content = file_path.read_text()
+    errors: list[str]
+) -> tuple[str, int]:
+    """Process all instances of a single marker type in content."""
     pattern = re.compile(
-        rf'{re.escape(START_MARKER)}\n(.*?){re.escape(END_MARKER)}',
+        rf'{re.escape(marker.start)}\n(.*?){re.escape(marker.end)}',
         re.DOTALL
     )
-
     replacements = 0
-    errors = []
 
     def replace_section(match: re.Match) -> str:
         nonlocal replacements
@@ -157,27 +198,47 @@ def process_markdown_file(
             return match.group(0)
 
         prepared_code = prepare_bash_code(code, test_files, work_dir)
-        success, stdout, stderr = run_bash_command(prepared_code, work_dir)
+        result = run_bash_command(prepared_code, work_dir)
 
-        if not success:
-            errors.append(f"Command failed: {stderr}")
+        if not result.success:
+            errors.append(f"Command failed: {result.stderr}")
             return match.group(0)
 
-        formatted_output = format_output(stdout)
+        formatted_output = format_output(result.stdout, max_lines=marker.max_lines)
         replacements += 1
-        return f"{START_MARKER}\n```\n{formatted_output}\n```\n{END_MARKER}"
+        return f"{marker.start}\n```\n{formatted_output}\n```\n{marker.end}"
 
     new_content = pattern.sub(replace_section, content)
+    return new_content, replacements
+
+
+def process_markdown_file(
+    file_path: Path,
+    test_files: dict[str, Path],
+    work_dir: Path,
+    dry_run: bool = False
+) -> tuple[bool, int]:
+    """Process a markdown file, replacing auto-generated sections."""
+    content = file_path.read_text()
+    new_content = content
+    total_replacements = 0
+    errors: list[str] = []
+
+    for marker in MARKERS:
+        new_content, replacements = process_marker(
+            new_content, marker, test_files, work_dir, errors
+        )
+        total_replacements += replacements
 
     if errors:
         for error in errors:
             print(f"  ERROR: {error}", file=sys.stderr)
-        return (False, replacements)
+        return (False, total_replacements)
 
     if new_content != content and not dry_run:
         file_path.write_text(new_content)
 
-    return (True, replacements)
+    return (True, total_replacements)
 
 
 def get_markdown_files(file_args: list[str]) -> list[Path]:
@@ -187,7 +248,8 @@ def get_markdown_files(file_args: list[str]) -> list[Path]:
     return list((REPO_ROOT / 'src').rglob('*.md'))
 
 
-def main() -> int:
+def parse_args() -> argparse.Namespace:
+    """Parse command line arguments."""
     parser = argparse.ArgumentParser(
         description='Generate auto-generated output sections in markdown files'
     )
@@ -196,7 +258,11 @@ def main() -> int:
                         help='Show what would be done without making changes')
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='Verbose output')
-    args = parser.parse_args()
+    return parser.parse_args()
+
+
+def main() -> int:
+    args = parse_args()
 
     md_files = get_markdown_files(args.files)
     if not md_files:

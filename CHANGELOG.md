@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2026-01-29
+
+* adds 5 new CLI tutorials: quick data inspection, QC workflow, modification gradients, region-specific analysis, and recipes
+* adds `AUTO-GENERATED-FULL` marker support for full output (no truncation) in documentation
+* adds install script instructions to introduction
+* improves test script with gitignore filtering and better output file substitution
+* adds matplotlib dependency to GitHub workflow
+* expands .gitignore with patterns for AI files and generated test outputs
+
 ## 2026-01-25
 
 * adds "Finding highly modified reads" documentation page

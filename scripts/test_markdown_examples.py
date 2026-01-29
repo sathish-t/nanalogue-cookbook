@@ -27,6 +27,16 @@ COMMAND_TIMEOUT_SECONDS = 60
 REPO_ROOT = Path(__file__).parent.parent.resolve()
 
 
+def is_gitignored(file_path: Path) -> bool:
+    """Check if a file is ignored by git. Exit code 0 means the file IS ignored."""
+    result = subprocess.run(
+        ['git', 'check-ignore', '-q', str(file_path)],
+        cwd=REPO_ROOT,
+        capture_output=True
+    )
+    return result.returncode == 0
+
+
 @dataclass
 class CodeBlock:
     """Represents a fenced code block from markdown."""
@@ -90,16 +100,16 @@ def should_skip_block(block: CodeBlock) -> tuple[bool, str]:
         if not lines:
             return True, "skipping comment-only block"
 
-        # Skip blocks that look like output examples (no commands, just data)
-        first_line = lines[0].strip()
-        if first_line.startswith(('#contig', 'a4f36092', '5d10eb9a', 'fffffff1', 'dummyI')):
-            return True, "skipping example output block"
-
         # Skip installation commands that we don't want to execute
+        first_line = lines[0].strip()
         install_prefixes = ('cargo install', 'pip install', 'pip3 install',
                             'docker pull', 'curl ')
         if any(first_line.startswith(prefix) for prefix in install_prefixes):
             return True, "skipping installation command"
+
+        # Skip blocks with placeholder URLs (example.com)
+        if 'example.com' in code:
+            return True, "skipping example.com placeholder URL"
 
     return False, ""
 
@@ -157,13 +167,16 @@ def prepare_bash_code(code: str, test_files: dict[str, Path], work_dir: Path) ->
 
 
     # Replace output files with paths in work_dir
-    output_files = ['hypermethylated_reads.txt', 'hypermethylated.bam', 'densities.tsv']
+    # Use word boundary regex to avoid matching substrings (e.g. densities.tsv within detailed_densities.tsv)
+    output_files = ['hypermethylated_reads.txt', 
+            'hypermethylated.bam',
+            'high_meth_reads.txt',
+            'detailed_densities.tsv',
+            'densities.tsv']
     for outfile in output_files:
-        prepared = prepared.replace(outfile, str(work_dir / outfile))
-
-    # Replace example regions with test data regions
-    # Test BAM has contigs named contig_00000, contig_00001, etc.
-    prepared = re.sub(r'chr\d+:\d+-\d+', 'contig_00000:0-500', prepared)
+        # Match filename only at word boundaries (not as substring of another path)
+        pattern = r'(?<![/\w])' + re.escape(outfile) + r'(?![/\w])'
+        prepared = re.sub(pattern, str(work_dir / outfile), prepared)
 
     return prepared
 
@@ -235,6 +248,16 @@ def main():
     else:
         src_dir = REPO_ROOT / 'src'
         md_files = list(src_dir.rglob('*.md'))
+
+    # Filter out gitignored files
+    ignored_files = [f for f in md_files if is_gitignored(f)]
+    md_files = [f for f in md_files if not is_gitignored(f)]
+
+    if ignored_files:
+        print(f"Skipping {len(ignored_files)} gitignored file(s):")
+        for f in ignored_files:
+            print(f"  - {f}")
+        print()
 
     if not md_files:
         print("No markdown files found")

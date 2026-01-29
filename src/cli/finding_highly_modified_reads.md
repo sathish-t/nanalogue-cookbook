@@ -95,10 +95,10 @@ nanalogue window-dens \
 <!-- AUTO-GENERATED:START -->
 ```
 #contig	ref_win_start	ref_win_end	read_id	win_val	strand	base	mod_strand	mod_type	win_start	win_end	basecall_qual
-contig_00000	34	64	0.1d9327c9-0ee4-4791-ac98-2ee026793946	0.7	-	C	+	m	9	39	27
-contig_00000	49	83	0.1d9327c9-0ee4-4791-ac98-2ee026793946	0.6	-	C	+	m	24	58	26
-contig_00000	65	117	0.1d9327c9-0ee4-4791-ac98-2ee026793946	0.6	-	C	+	m	40	92	28
-contig_00000	97	131	0.1d9327c9-0ee4-4791-ac98-2ee026793946	0.7	-	C	+	m	72	106	27
+contig_00000	82	134	0.b55f2482-b935-4d11-8b03-4ea7d1c838a3	0.5	-	C	+	m	12	64	28
+contig_00000	95	150	0.b55f2482-b935-4d11-8b03-4ea7d1c838a3	0.7	-	C	+	m	25	80	27
+contig_00000	139	174	0.b55f2482-b935-4d11-8b03-4ea7d1c838a3	0.7	-	C	+	m	69	104	28
+contig_00000	152	190	0.b55f2482-b935-4d11-8b03-4ea7d1c838a3	0.5	-	C	+	m	82	120	27
 ...
 ```
 <!-- AUTO-GENERATED:END -->
@@ -113,9 +113,10 @@ This output can be loaded into Python/R for custom analysis and visualization.
 
 - **Combine with region filtering**: Use the `--region` parameter to filter reads to a genomic region:
   ```bash
+  # Replace contig_00001:100-200 with an actual region from your BAM file, e.g. chr1:1000-2000
   nanalogue find-modified-reads any-dens-above \
       --win 10 --step 5 --tag m --high 0.8 \
-      --region chr11:2000000-2200000 \
+      --region contig_00001:100-200 \
       input.bam
   ```
 
