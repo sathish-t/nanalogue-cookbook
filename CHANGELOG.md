@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## 2026-01-30
 
+* adds "Extracting sequences" tutorial covering sequence display with indel and modification highlighting
+* refactors test data creation into shared `scripts/test_data.py` module
+* adds indel test data configuration for testing insertion/deletion examples
+* consolidates generated test outputs into `outputs/` directory
+* adds tip about shared filtering options to recipes page
 * renames "QC your modification data" to "Quality control of mod data" for clarity
 * adds table of contents with anchor links under Installation section
 * adds CLI tutorials summary section in cli.md with links to all tutorial pages

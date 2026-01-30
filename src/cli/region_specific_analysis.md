@@ -126,7 +126,7 @@ nanalogue window-dens --win 10 --step 5 \
     https://downloads.pacbcloud.com/public/dataset/HG002-CpG-methylation-202202/HG002.GRCh38.haplotagged.bam \
     > brca1_promoter.tsv
 
-# BRCA2 promoter (chr13:32,315,000-32,317,000)
+# BRCA2 promoter (for tutorial, assume chr13:32,315,000-32,317,000)
 nanalogue window-dens --win 10 --step 5 \
     --region chr13:32315000-32317000 \
     https://downloads.pacbcloud.com/public/dataset/HG002-CpG-methylation-202202/HG002.GRCh38.haplotagged.bam \

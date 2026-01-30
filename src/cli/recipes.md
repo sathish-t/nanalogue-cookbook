@@ -2,6 +2,8 @@
 
 Quick, copy-paste snippets for common nanalogue tasks. For detailed explanations, see the linked tutorials.
 
+> **Tip:** Most filtering options (such as `--mapq-filter`, `--min-align-len`, `--mod-prob-filter`) are shared across subcommands. You can combine the filters shown below with almost any nanalogue command.
+
 ---
 
 ## Quick Inspection

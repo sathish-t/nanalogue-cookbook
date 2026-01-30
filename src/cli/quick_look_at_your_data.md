@@ -17,16 +17,17 @@ nanalogue peek input.bam
 ```
 
 **Example output:**
-<!-- AUTO-GENERATED:START -->
+<!-- AUTO-GENERATED-FULL:START -->
 ```
 contigs_and_lengths:
-contig_00000	785
-contig_00001	677
-contig_00002	786
+contig_00000	682
+contig_00001	509
+contig_00002	543
 
-...
+modifications:
+C+m
 ```
-<!-- AUTO-GENERATED:END -->
+<!-- AUTO-GENERATED-FULL:END -->
 
 > **Note:** The contig names `contig_00000`, `contig_00001`, etc. are example names used here. In real BAM files aligned to a reference genome, you will see names like `chr1`, `chr2`, `NC_000001.11`, or similar depending on your reference.
 
@@ -55,21 +56,21 @@ nanalogue read-stats input.bam
 <!-- AUTO-GENERATED-FULL:START -->
 ```
 key	value
-n_primary_alignments	10
-n_secondary_alignments	7
-n_supplementary_alignments	8
+n_primary_alignments	8
+n_secondary_alignments	8
+n_supplementary_alignments	9
 n_unmapped_reads	5
-n_reversed_reads	16
-align_len_mean	442
-align_len_max	616
-align_len_min	249
-align_len_median	418
-align_len_n50	462
-seq_len_mean	432
-seq_len_max	616
-seq_len_min	208
-seq_len_median	437
-seq_len_n50	462
+n_reversed_reads	12
+align_len_mean	304
+align_len_max	445
+align_len_min	164
+align_len_median	284
+align_len_n50	329
+seq_len_mean	315
+seq_len_max	482
+seq_len_min	164
+seq_len_median	293
+seq_len_n50	331
 ```
 <!-- AUTO-GENERATED-FULL:END -->
 

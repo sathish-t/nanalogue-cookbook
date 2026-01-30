@@ -32,11 +32,11 @@ nanalogue read-info --detailed input.bam | jq '.[].mod_table[].data[][2]' | shuf
 
 <!-- AUTO-GENERATED:START -->
 ```
-187
-213
-43
-199
-34
+35
+97
+239
+36
+223
 ...
 ```
 <!-- AUTO-GENERATED:END -->
@@ -150,9 +150,9 @@ nanalogue read-table-show-mods --tag m input.bam | head -10
 ```
 # mod-unmod threshold is 0.5
 read_id	align_length	sequence_length_template	alignment_type	mod_count
-0.8d55bcf0-eb75-4fad-aac4-b6aac8c23aae	604	604	supplementary_forward	m:97
-0.42540144-d4bd-4d91-abff-5e4f563b1e70	413	413	secondary_forward	m:70
-0.2940e725-5d13-49e2-b320-855cf2ccfedc	318	318	primary_reverse	m:51
+0.04723b11-aa9e-4eeb-bc70-8bd6d1dfa695	433	433	secondary_reverse	m:68
+0.0dad9522-6c26-4c1d-bc15-a7d5c745e103	231	231	secondary_reverse	m:38
+0.ca7dd878-a63a-499b-a3d0-29c588f70800	188	188	supplementary_forward	m:33
 ...
 ```
 <!-- AUTO-GENERATED:END -->

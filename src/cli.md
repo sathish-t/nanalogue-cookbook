@@ -7,6 +7,7 @@ The following tutorials demonstrate common workflows with nanalogue:
 - [Quick look at your data](./cli/quick_look_at_your_data.md) — Initial inspection of BAM files to see contigs and modification types
 - [Quality control of mod data](./cli/qc_modification_data.md) — Assess modification call quality and apply filters
 - [Extract raw mod calls](./cli/extract_raw_mod_data.md) — Get raw modification data from BAM files
+- [Extracting sequences](./cli/extracting_sequences.md) — Display read sequences with indel and modification highlighting
 - [Finding highly modified reads](./cli/finding_highly_modified_reads.md) — Filter reads by modification level
 - [Exploring modification gradients](./cli/exploring_modification_gradients.md) — Detect directional patterns in modification data
 - [Region-specific analysis](./cli/region_specific_analysis.md) — Focus analysis on specific genomic regions
