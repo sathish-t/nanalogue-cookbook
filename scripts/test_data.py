@@ -32,6 +32,71 @@ JSON_CONFIG_BASIC = '''
 }
 '''
 
+# BAM with random mismatches in all reads (simulates sequencing errors)
+JSON_CONFIG_ERRORS = '''
+{
+  "contigs": {
+    "number": 3,
+    "len_range": [200, 200]
+  },
+  "reads": [
+    {
+      "number": 30,
+      "mapq_range": [20, 60],
+      "base_qual_range": [20, 40],
+      "len_range": [1.0, 1.0],
+      "mismatch": 0.5,
+      "mods": [{
+        "base": "C",
+        "is_strand_plus": true,
+        "mod_code": "m",
+        "win": [5, 3],
+        "mod_range": [[0.7, 1.0], [0.1, 0.4]]
+      }]
+    }
+  ]
+}
+'''
+
+# BAM with two read groups - one clean, one with mismatches (simulates heterozygous variant)
+JSON_CONFIG_VARIANT = '''
+{
+  "contigs": {
+    "number": 3,
+    "len_range": [200, 200]
+  },
+  "reads": [
+    {
+      "number": 30,
+      "mapq_range": [20, 60],
+      "base_qual_range": [20, 40],
+      "len_range": [1.0, 1.0],
+      "mods": [{
+        "base": "C",
+        "is_strand_plus": true,
+        "mod_code": "m",
+        "win": [5, 3],
+        "mod_range": [[0.7, 1.0], [0.1, 0.4]]
+      }]
+    },
+    {
+      "number": 30,
+      "mapq_range": [20, 60],
+      "base_qual_range": [20, 40],
+      "len_range": [1.0, 1.0],
+      "mismatch": 0.5,
+      "mods": [{
+        "base": "C",
+        "is_strand_plus": true,
+        "mod_code": "m",
+        "win": [5, 3],
+        "mod_range": [[0.7, 1.0], [0.1, 0.4]]
+      }]
+    }
+  ]
+}
+'''
+
 # BAM with insertions, deletions, and modifications
 JSON_CONFIG_INDELS = '''
 {
@@ -83,8 +148,28 @@ def create_test_data(work_dir: Path) -> dict[str, Path]:
         fasta_path=str(fasta_indels_path)
     )
 
+    bam_errors_path = work_dir / "test_input_errors.bam"
+    fasta_errors_path = work_dir / "test_input_errors.fasta"
+
+    pynanalogue.simulate_mod_bam(
+        json_config=JSON_CONFIG_ERRORS,
+        bam_path=str(bam_errors_path),
+        fasta_path=str(fasta_errors_path)
+    )
+
+    bam_variant_path = work_dir / "test_input_variant.bam"
+    fasta_variant_path = work_dir / "test_input_variant.fasta"
+
+    pynanalogue.simulate_mod_bam(
+        json_config=JSON_CONFIG_VARIANT,
+        bam_path=str(bam_variant_path),
+        fasta_path=str(fasta_variant_path)
+    )
+
     return {
         "input.bam": bam_path,
         "aligned_reads.bam": bam_path,
         "input_indels.bam": bam_indels_path,
+        "error_data.bam": bam_errors_path,
+        "variant_data.bam": bam_variant_path,
     }

@@ -19,13 +19,7 @@ nanalogue peek input.bam
 **Example output:**
 <!-- AUTO-GENERATED-FULL:START -->
 ```
-contigs_and_lengths:
-contig_00000	682
-contig_00001	509
-contig_00002	543
-
-modifications:
-C+m
+...
 ```
 <!-- AUTO-GENERATED-FULL:END -->
 
@@ -55,22 +49,7 @@ nanalogue read-stats input.bam
 **Example output:**
 <!-- AUTO-GENERATED-FULL:START -->
 ```
-key	value
-n_primary_alignments	8
-n_secondary_alignments	8
-n_supplementary_alignments	9
-n_unmapped_reads	5
-n_reversed_reads	12
-align_len_mean	304
-align_len_max	445
-align_len_min	164
-align_len_median	284
-align_len_n50	329
-seq_len_mean	315
-seq_len_max	482
-seq_len_min	164
-seq_len_median	293
-seq_len_n50	331
+...
 ```
 <!-- AUTO-GENERATED-FULL:END -->
 

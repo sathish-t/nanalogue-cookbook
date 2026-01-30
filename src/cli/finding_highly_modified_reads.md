@@ -94,11 +94,6 @@ nanalogue window-dens \
 **Example output:**
 <!-- AUTO-GENERATED:START -->
 ```
-#contig	ref_win_start	ref_win_end	read_id	win_val	strand	base	mod_strand	mod_type	win_start	win_end	basecall_qual
-contig_00000	62	97	0.0f1c1eea-3188-4af9-99a6-f64c7c827bb5	0.7	+	C	+	m	0	35	26
-contig_00000	87	119	0.0f1c1eea-3188-4af9-99a6-f64c7c827bb5	0.5	+	C	+	m	25	57	26
-contig_00000	100	133	0.0f1c1eea-3188-4af9-99a6-f64c7c827bb5	0.7	+	C	+	m	38	71	27
-contig_00000	128	157	0.0f1c1eea-3188-4af9-99a6-f64c7c827bb5	0.6	+	C	+	m	66	95	27
 ...
 ```
 <!-- AUTO-GENERATED:END -->
