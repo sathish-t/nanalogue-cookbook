@@ -95,10 +95,10 @@ nanalogue window-dens \
 <!-- AUTO-GENERATED:START -->
 ```
 #contig	ref_win_start	ref_win_end	read_id	win_val	strand	base	mod_strand	mod_type	win_start	win_end	basecall_qual
-contig_00000	82	134	0.b55f2482-b935-4d11-8b03-4ea7d1c838a3	0.5	-	C	+	m	12	64	28
-contig_00000	95	150	0.b55f2482-b935-4d11-8b03-4ea7d1c838a3	0.7	-	C	+	m	25	80	27
-contig_00000	139	174	0.b55f2482-b935-4d11-8b03-4ea7d1c838a3	0.7	-	C	+	m	69	104	28
-contig_00000	152	190	0.b55f2482-b935-4d11-8b03-4ea7d1c838a3	0.5	-	C	+	m	82	120	27
+contig_00000	23	68	0.8d55bcf0-eb75-4fad-aac4-b6aac8c23aae	0.7	+	C	+	m	6	51	26
+contig_00000	54	93	0.8d55bcf0-eb75-4fad-aac4-b6aac8c23aae	0.5	+	C	+	m	37	76	26
+contig_00000	78	112	0.8d55bcf0-eb75-4fad-aac4-b6aac8c23aae	0.7	+	C	+	m	61	95	27
+contig_00000	95	122	0.8d55bcf0-eb75-4fad-aac4-b6aac8c23aae	0.6	+	C	+	m	78	105	26
 ...
 ```
 <!-- AUTO-GENERATED:END -->
@@ -112,13 +112,14 @@ This output can be loaded into Python/R for custom analysis and visualization.
 - **Window size matters**: Smaller windows capture local patterns but are noisier. Larger windows give more stable estimates but may miss focal modifications.
 
 - **Combine with region filtering**: Use the `--region` parameter to filter reads to a genomic region:
+  <!--REPLACE_CHR1_WITH_CONTIG_00001:START-->
   ```bash
-  # Replace contig_00001:100-200 with an actual region from your BAM file, e.g. chr1:1000-2000
   nanalogue find-modified-reads any-dens-above \
       --win 10 --step 5 --tag m --high 0.8 \
-      --region contig_00001:100-200 \
+      --region chr1:100-200 \
       input.bam
   ```
+  <!--REPLACE_CHR1_WITH_CONTIG_00001:END-->
 
 - **Performance**: Nanalogue is written in Rust and designed to handle large BAM files efficiently. For very large files, you can process in parallel by splitting by chromosome.
 

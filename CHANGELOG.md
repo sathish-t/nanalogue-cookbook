@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2026-01-30
+
+* renames "QC your modification data" to "Quality control of mod data" for clarity
+* adds table of contents with anchor links under Installation section
+* adds CLI tutorials summary section in cli.md with links to all tutorial pages
+* reorders CLI sidebar so CLI Commands Reference appears at the bottom
+* adds REPLACE tag functionality for testing: documentation shows user-friendly region names (chr1) while tests automatically substitute test data contig names (contig_00001)
+* updates all region-specific examples to use chr1 instead of contig_00001
+
 ## 2026-01-29
 
 * adds 5 new CLI tutorials: quick data inspection, QC workflow, modification gradients, region-specific analysis, and recipes

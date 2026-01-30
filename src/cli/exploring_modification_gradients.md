@@ -34,10 +34,10 @@ nanalogue window-grad --win 10 --step 5 input.bam
 <!-- AUTO-GENERATED:START -->
 ```
 #contig	ref_win_start	ref_win_end	read_id	win_val	strand	base	mod_strand	mod_type	win_start	win_end	basecall_qual
-contig_00000	82	134	0.b55f2482-b935-4d11-8b03-4ea7d1c838a3	-0.030303031	-	C	+	m	12	64	28
-contig_00000	95	150	0.b55f2482-b935-4d11-8b03-4ea7d1c838a3	0.054545455	-	C	+	m	25	80	27
-contig_00000	139	174	0.b55f2482-b935-4d11-8b03-4ea7d1c838a3	-0.054545455	-	C	+	m	69	104	28
-contig_00000	152	190	0.b55f2482-b935-4d11-8b03-4ea7d1c838a3	0.030303031	-	C	+	m	82	120	27
+contig_00000	23	68	0.8d55bcf0-eb75-4fad-aac4-b6aac8c23aae	-0.054545455	+	C	+	m	6	51	26
+contig_00000	54	93	0.8d55bcf0-eb75-4fad-aac4-b6aac8c23aae	0.030303031	+	C	+	m	37	76	26
+contig_00000	78	112	0.8d55bcf0-eb75-4fad-aac4-b6aac8c23aae	0.018181818	+	C	+	m	61	95	27
+contig_00000	95	122	0.8d55bcf0-eb75-4fad-aac4-b6aac8c23aae	-0.036363635	+	C	+	m	78	105	26
 ...
 ```
 <!-- AUTO-GENERATED:END -->
@@ -79,7 +79,7 @@ One powerful application of gradient analysis is determining DNA replication for
 
 ### Background
 
-During DNA replication:
+During DNA replication under appropriate experimental conditions:
 - BrdU is incorporated into newly synthesized DNA
 - Nanopore sequencing detects BrdU as a thymidine modification
 - The direction of BrdU signal change along a molecule reveals which way the replication fork was traveling
@@ -87,7 +87,7 @@ During DNA replication:
 ### How Gradients Reveal Fork Direction
 
 Let's say you have set up an experiment so that BrdU levels are high
-during the start of the experiment and the level decrease over time.
+at the start of the experiment and the level decrease over time.
 Consider a single DNA molecule that was replicated by a fork moving left-to-right:
 - The **left end** was replicated first → more BrdU
 - The **right end** was replicated later → less BrdU
@@ -139,12 +139,16 @@ nanalogue window-grad --win 10 --step 5 \
     --mapq-filter 20 \
     --base-qual-filter-mod 20 \
     input.bam
+```
 
-# Focus on a specific region (replace contig_00001:100-200 with an actual region from your BAM file, e.g. chr1:1000-2000)
+<!--REPLACE_CHR1_WITH_CONTIG_00001:START-->
+```bash
+# Focus on a specific region
 nanalogue window-grad --win 10 --step 5 \
-    --region contig_00001:100-200 \
+    --region chr1:100-200 \
     input.bam
 ```
+<!--REPLACE_CHR1_WITH_CONTIG_00001:END-->
 
 ## Next Steps
 
@@ -154,5 +158,5 @@ nanalogue window-grad --win 10 --step 5 \
 
 ## See Also
 
-- [QC your modification data](./qc_modification_data.md) — Ensure data quality before gradient analysis
+- [Quality control of mod data](./qc_modification_data.md) — Ensure data quality before gradient analysis
 - [CLI Reference](../cli.md) — Full documentation of all nanalogue commands

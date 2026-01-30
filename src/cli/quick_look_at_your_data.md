@@ -20,9 +20,9 @@ nanalogue peek input.bam
 <!-- AUTO-GENERATED:START -->
 ```
 contigs_and_lengths:
-contig_00000	675
-contig_00001	787
-contig_00002	500
+contig_00000	785
+contig_00001	677
+contig_00002	786
 
 ...
 ```
@@ -55,21 +55,21 @@ nanalogue read-stats input.bam
 <!-- AUTO-GENERATED-FULL:START -->
 ```
 key	value
-n_primary_alignments	9
-n_secondary_alignments	8
+n_primary_alignments	10
+n_secondary_alignments	7
 n_supplementary_alignments	8
 n_unmapped_reads	5
-n_reversed_reads	15
-align_len_mean	382
-align_len_max	572
-align_len_min	163
-align_len_median	377
-align_len_n50	397
-seq_len_mean	380
-seq_len_max	572
-seq_len_min	163
-seq_len_median	378
-seq_len_n50	397
+n_reversed_reads	16
+align_len_mean	442
+align_len_max	616
+align_len_min	249
+align_len_median	418
+align_len_n50	462
+seq_len_mean	432
+seq_len_max	616
+seq_len_min	208
+seq_len_median	437
+seq_len_n50	462
 ```
 <!-- AUTO-GENERATED-FULL:END -->
 
@@ -106,7 +106,7 @@ nanalogue peek input.bam | grep modifications
 ## Next Steps
 
 Once you've confirmed your data looks correct:
-- [QC your modification data](./qc_modification_data.md) — Assess modification call quality
+- [Quality control of mod data](./qc_modification_data.md) — Assess modification call quality
 - [Find highly modified reads](./finding_highly_modified_reads.md) — Filter reads by modification level
 - [Explore a specific region](./region_specific_analysis.md) — Focus on genes or features of interest
 

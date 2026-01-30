@@ -37,6 +37,22 @@ Options:
 - Ensure `nanalogue` is installed and available in PATH (via `cargo install nanalogue`)
 - Code blocks that look like output (starting with `#contig`, read IDs, etc.) are automatically skipped
 
+### Region name replacement for testing
+
+Documentation shows user-friendly region names (e.g., `chr1:1000-2000`) but tests use simulated BAM files with different contig names (e.g., `contig_00001`). To handle this, wrap code blocks with replacement tags:
+
+````markdown
+<!--REPLACE_CHR1_WITH_CONTIG_00001:START-->
+```bash
+nanalogue window-dens --win 10 --step 5 --region chr1:100-200 input.bam
+```
+<!--REPLACE_CHR1_WITH_CONTIG_00001:END-->
+````
+
+During testing, `chr1` is automatically replaced with `contig_00001` within these tagged sections. This allows documentation to show realistic chromosome names while tests run against the simulated data.
+
+**Note:** This replacement only affects testing - the published documentation shows the original text with user-friendly region names.
+
 ## Auto-Generated Output Sections
 
 The script `scripts/generate_markdown_outputs.py` keeps example output in sync with actual command output.

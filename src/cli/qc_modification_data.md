@@ -1,4 +1,4 @@
-# QC Your Modification Data
+# Quality Control of Mod Data
 
 Before diving into downstream analysis, it's important to assess whether your modification calls are trustworthy. This tutorial covers how to check modification call quality and apply filters to improve data reliability.
 
@@ -32,11 +32,11 @@ nanalogue read-info --detailed input.bam | jq '.[].mod_table[].data[][2]' | shuf
 
 <!-- AUTO-GENERATED:START -->
 ```
-69
-42
-201
+187
 213
+43
 199
+34
 ...
 ```
 <!-- AUTO-GENERATED:END -->
@@ -127,10 +127,11 @@ If you have positive or negative controls, verify your data matches expectations
 
 Use `window-dens` on a region you expect to be highly modified:
 
+<!--REPLACE_CHR1_WITH_CONTIG_00001:START-->
 ```bash
-# Replace contig_00001:100-200 with an actual region from your BAM file, e.g. chr1:1000-2000
-nanalogue window-dens --win 20 --step 10 --region contig_00001:100-200 input.bam
+nanalogue window-dens --win 20 --step 10 --region chr1:100-200 input.bam
 ```
+<!--REPLACE_CHR1_WITH_CONTIG_00001:END-->
 
 If your positive control region shows low modification, investigate:
 - Was the correct basecaller model used?
@@ -149,9 +150,9 @@ nanalogue read-table-show-mods --tag m input.bam | head -10
 ```
 # mod-unmod threshold is 0.5
 read_id	align_length	sequence_length_template	alignment_type	mod_count
-0.5b0745f3-3dc8-41d1-a2c5-34839cf96bb8	399	399	primary_reverse	m:65
-0.4f9784df-3831-4a11-a342-6dc52a485483	0	224	unmapped	m:37
-0.d7272d9f-3b8c-4002-8518-bfad017c4298	404	404	primary_reverse	m:59
+0.8d55bcf0-eb75-4fad-aac4-b6aac8c23aae	604	604	supplementary_forward	m:97
+0.42540144-d4bd-4d91-abff-5e4f563b1e70	413	413	secondary_forward	m:70
+0.2940e725-5d13-49e2-b320-855cf2ccfedc	318	318	primary_reverse	m:51
 ...
 ```
 <!-- AUTO-GENERATED:END -->

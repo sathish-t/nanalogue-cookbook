@@ -31,12 +31,13 @@ Nanalogue provides three region-related parameters:
 
 The `--region` parameter selects reads that overlap a genomic region:
 
+<!--REPLACE_CHR1_WITH_CONTIG_00001:START-->
 ```bash
-# Replace contig_00001:100-200 with an actual region from your BAM file, e.g. chr1:1000-2000
 nanalogue window-dens --win 10 --step 5 \
-    --region contig_00001:100-200 \
+    --region chr1:100-200 \
     input.bam
 ```
+<!--REPLACE_CHR1_WITH_CONTIG_00001:END-->
 
 This keeps any read that overlaps the specified region. Reads may extend beyond the region boundaries.
 
@@ -44,12 +45,13 @@ This keeps any read that overlaps the specified region. Reads may extend beyond 
 
 The `--mod-region` parameter filters which modifications are counted:
 
+<!--REPLACE_CHR1_WITH_CONTIG_00001:START-->
 ```bash
-# Replace contig_00001:100-200 with an actual region from your BAM file, e.g. chr1:1000-2000
 nanalogue window-dens --win 10 --step 5 \
-    --mod-region contig_00001:100-200 \
+    --mod-region chr1:100-200 \
     input.bam
 ```
+<!--REPLACE_CHR1_WITH_CONTIG_00001:END-->
 
 This processes all reads but only counts modifications that fall within the specified region.
 
@@ -57,13 +59,14 @@ This processes all reads but only counts modifications that fall within the spec
 
 For the most focused analysis, use both:
 
+<!--REPLACE_CHR1_WITH_CONTIG_00001:START-->
 ```bash
-# Replace contig_00001:100-200 with an actual region from your BAM file, e.g. chr1:1000-2000
 nanalogue window-dens --win 10 --step 5 \
-    --region contig_00001:100-200 \
-    --mod-region contig_00001:100-200 \
+    --region chr1:100-200 \
+    --mod-region chr1:100-200 \
     input.bam
 ```
+<!--REPLACE_CHR1_WITH_CONTIG_00001:END-->
 
 This selects only reads overlapping the region AND only counts modifications within it.
 
@@ -71,13 +74,14 @@ This selects only reads overlapping the region AND only counts modifications wit
 
 Use `--full-region` when you need reads that span an entire feature:
 
+<!--REPLACE_CHR1_WITH_CONTIG_00001:START-->
 ```bash
-# Replace contig_00001:100-200 with an actual region from your BAM file, e.g. chr1:1000-2000
 nanalogue window-dens --win 10 --step 5 \
-    --region contig_00001:100-200 \
+    --region chr1:100-200 \
     --full-region \
     input.bam
 ```
+<!--REPLACE_CHR1_WITH_CONTIG_00001:END-->
 
 This is useful when you want to ensure complete coverage of a promoter or exon.
 
@@ -137,13 +141,14 @@ For complex analyses, use a two-pass approach:
 
 First, identify reads meeting your criteria:
 
+<!--REPLACE_CHR1_WITH_CONTIG_00001:START-->
 ```bash
-# Replace contig_00001:100-200 with an actual region from your BAM file, e.g. chr1:1000-2000
 nanalogue find-modified-reads any-dens-above \
     --win 10 --step 5 --tag m --high 0.8 \
-    --region contig_00001:100-200 \
+    --region chr1:100-200 \
     input.bam > high_meth_brca1_reads.txt
 ```
+<!--REPLACE_CHR1_WITH_CONTIG_00001:END-->
 
 ### Pass 2: Detailed Analysis
 
@@ -176,13 +181,14 @@ For local files:
 
 When exploring a new dataset, subsample first:
 
+<!--REPLACE_CHR1_WITH_CONTIG_00001:START-->
 ```bash
-# Replace contig_00001:100-200 with an actual region from your BAM file, e.g. chr1:1000-2000
 nanalogue window-dens --win 10 --step 5 \
-    --region contig_00001:100-200 \
+    --region chr1:100-200 \
     -s 0.1 \
     input.bam
 ```
+<!--REPLACE_CHR1_WITH_CONTIG_00001:END-->
 
 ## Next Steps
 
@@ -193,5 +199,5 @@ nanalogue window-dens --win 10 --step 5 \
 ## See Also
 
 - [Quick look at your data](./quick_look_at_your_data.md) — Initial data inspection
-- [QC your modification data](./qc_modification_data.md) — Ensure data quality
+- [Quality control of mod data](./qc_modification_data.md) — Ensure data quality
 - [CLI Reference](../cli.md) — Full documentation of all nanalogue commands

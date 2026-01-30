@@ -108,12 +108,13 @@ nanalogue read-info --detailed-pretty input.bam > reads.json
 
 ### Analyze a specific gene
 
+<!--REPLACE_CHR1_WITH_CONTIG_00001:START-->
 ```bash
-# Replace contig_00001:100-200 with an actual region from your BAM file, e.g. chr1:1000-2000
 nanalogue window-dens --win 10 --step 5 \
-    --region contig_00001:100-200 \
+    --region chr1:100-200 \
     input.bam
 ```
+<!--REPLACE_CHR1_WITH_CONTIG_00001:END-->
 
 [More info](./region_specific_analysis.md)
 
@@ -129,22 +130,24 @@ Always use `--region` with remote files to avoid downloading the entire BAM.
 
 ### Only count modifications within a region
 
+<!--REPLACE_CHR1_WITH_CONTIG_00001:START-->
 ```bash
-# Replace contig_00001:100-200 with an actual region from your BAM file, e.g. chr1:1000-2000
 nanalogue window-dens --win 10 --step 5 \
-    --mod-region contig_00001:100-200 \
+    --mod-region chr1:100-200 \
     input.bam
 ```
+<!--REPLACE_CHR1_WITH_CONTIG_00001:END-->
 
 ### Require reads to span the full region
 
+<!--REPLACE_CHR1_WITH_CONTIG_00001:START-->
 ```bash
-# Replace contig_00001:100-200 with an actual region from your BAM file, e.g. chr1:1000-2000
 nanalogue window-dens --win 10 --step 5 \
-    --region contig_00001:100-200 \
+    --region chr1:100-200 \
     --full-region \
     input.bam
 ```
+<!--REPLACE_CHR1_WITH_CONTIG_00001:END-->
 
 ---
 
@@ -256,7 +259,7 @@ Common tags: `m` (5mC), `h` (5hmC), `a` (6mA).
 ## See Also
 
 - [Quick look at your data](./quick_look_at_your_data.md)
-- [QC your modification data](./qc_modification_data.md)
+- [Quality control of mod data](./qc_modification_data.md)
 - [Finding highly modified reads](./finding_highly_modified_reads.md)
 - [Exploring modification gradients](./exploring_modification_gradients.md)
 - [Region-specific analysis](./region_specific_analysis.md)

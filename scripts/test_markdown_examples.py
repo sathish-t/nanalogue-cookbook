@@ -58,10 +58,46 @@ class TestResult:
     error: str
 
 
+def find_replace_regions(content: str) -> list[tuple[int, int, str, str]]:
+    """Find REPLACE tag regions and extract their replacement rules.
+
+    Returns list of (start_pos, end_pos, from_str, to_str) tuples.
+    Tags look like: <!--REPLACE_CHR1_WITH_CONTIG_00001:START--> ... <!--REPLACE_CHR1_WITH_CONTIG_00001:END-->
+    """
+    regions = []
+    # Match REPLACE_<FROM>_WITH_<TO>:START and corresponding END tags
+    pattern = r'<!--REPLACE_([^_]+)_WITH_([^:]+):START-->(.*?)<!--REPLACE_\1_WITH_\2:END-->'
+
+    for match in re.finditer(pattern, content, re.DOTALL):
+        from_str = match.group(1)
+        to_str = match.group(2)
+        start_pos = match.start()
+        end_pos = match.end()
+        regions.append((start_pos, end_pos, from_str, to_str))
+
+    return regions
+
+
+def apply_replace_tags(code: str, code_start_pos: int, replace_regions: list[tuple[int, int, str, str]]) -> str:
+    """Apply REPLACE tag substitutions to code if it falls within a replace region.
+
+    The tag names use uppercase (e.g., CHR1, CONTIG_00001) but the actual code and
+    BAM files use lowercase. This function handles the case conversion automatically.
+    """
+    for start_pos, end_pos, from_str, to_str in replace_regions:
+        if start_pos <= code_start_pos <= end_pos:
+            # Replace case-insensitively, using lowercase target (BAM uses lowercase contig names)
+            code = re.sub(re.escape(from_str), to_str.lower(), code, flags=re.IGNORECASE)
+    return code
+
+
 def extract_code_blocks(markdown_path: str) -> list[CodeBlock]:
     """Extract fenced code blocks from a markdown file."""
     with open(markdown_path, 'r') as f:
         content = f.read()
+
+    # Find REPLACE tag regions for later substitution
+    replace_regions = find_replace_regions(content)
 
     blocks = []
     # Match fenced code blocks: ```language ... ```
@@ -71,6 +107,9 @@ def extract_code_blocks(markdown_path: str) -> list[CodeBlock]:
     for match in re.finditer(pattern, content, re.MULTILINE | re.DOTALL):
         language = match.group(1)
         code = match.group(2)
+
+        # Apply REPLACE tag substitutions if this code block is within a replace region
+        code = apply_replace_tags(code, match.start(), replace_regions)
 
         # Calculate line number
         line_number = content[:match.start()].count('\n') + 1

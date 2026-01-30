@@ -31,6 +31,11 @@ nanalogue:
 
 ## Installation
 
+- [Using Cargo](#using-cargo)
+- [Using Docker](#using-docker)
+- [Pre-built Binaries](#pre-built-binaries)
+- [Python Library](#python-library)
+
 ### Using Cargo
 
 Run the following command to install or update `nanalogue` for usage on the command line:
