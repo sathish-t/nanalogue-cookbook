@@ -10,7 +10,7 @@ Although nanalogue's primary focus is on DNA/RNA modifications
 on a single-molecule level, some of its functions are quite general and can be applied
 to almost any BAM file. Nanalogue is open-source and its code can be found
 on [Github](https://github.com/DNAReplicationLab/nanalogue). The code of a companion package
-pynanalogue can be found [here](https://github.com/DNAReplicationLab/nanalogue).
+pynanalogue can be found [here](https://github.com/DNAReplicationLab/pynanalogue).
 
 If you are a developer who needs BAM files with defined single-molecule modification patterns
 to help develop/test your tool, nanalogue can also help you create BAM files from scratch
