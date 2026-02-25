@@ -122,7 +122,8 @@ To build from source (requires `npm` and `git`):
 git clone https://github.com/sathish-t/nanalogue-gui.git
 cd nanalogue-gui
 npm install
-npm start
 ```
+
+Then start the app with `npm start`.
 
 For more details, see the [nanalogue-gui repository](https://github.com/sathish-t/nanalogue-gui).

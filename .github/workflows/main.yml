@@ -35,6 +35,11 @@ jobs:
           python-version: '3.11'
       - name: Install pynanalogue, matplotlib
         run: pip3 install pynanalogue matplotlib
+      # Install Node.js (needed for nanalogue-node and nanalogue-gui)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
       # Install system dependencies for markdown tests
       - name: Install samtools and jq
         run: sudo apt-get update && sudo apt-get install -y samtools jq
