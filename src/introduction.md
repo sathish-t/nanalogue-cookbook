@@ -27,7 +27,13 @@ nanalogue:
   a subset of nanalogue's functions. See [here](./python.md).
 - as a rust library i.e. if you write rust code, you can benefit from nanalogue's functions.
   If you are a rust developer looking to use nanalogue as a rust library,
-  please head over to [docs.rs](https://docs.rs/nanalogue/latest/nanalogue_core/). 
+  please head over to [docs.rs](https://docs.rs/nanalogue/latest/nanalogue_core/).
+
+Nanalogue is also available in other forms:
+- as a [Node.js package](https://github.com/sathish-t/nanalogue-node) for use in JavaScript/TypeScript projects.
+- as a [GUI application](https://github.com/sathish-t/nanalogue-gui) for those who prefer a graphical interface.
+
+![Nanalogue GUI landing page](./images/nanalogue-gui-landing.png) 
 
 ## Installation
 
@@ -35,6 +41,8 @@ nanalogue:
 - [Using Docker](#using-docker)
 - [Pre-built Binaries](#pre-built-binaries)
 - [Python Library](#python-library)
+- [Node.js Package](#nodejs-package)
+- [GUI Application](#gui-application)
 
 ### Using Cargo
 
@@ -89,3 +97,32 @@ To install the Python wrapper `pynanalogue`:
 ```bash
 pip install pynanalogue
 ```
+
+### Node.js Package
+
+Requires Node.js 22 or higher. To install the Node.js bindings:
+
+```bash
+npm install @nanalogue/node
+```
+
+For more details, see the [nanalogue-node repository](https://github.com/sathish-t/nanalogue-node).
+
+### GUI Application
+
+The GUI application provides a desktop interface for working with BAM/CRAM/Mod-BAM files.
+Pre-built binaries for macOS and Linux are available from the
+[releases page](https://github.com/sathish-t/nanalogue-gui/releases).
+For Windows, we recommend running the Linux binary using
+[WSL](https://learn.microsoft.com/en-us/windows/wsl/install).
+
+To build from source (requires `npm` and `git`):
+
+```bash
+git clone https://github.com/sathish-t/nanalogue-gui.git
+cd nanalogue-gui
+npm install
+npm start
+```
+
+For more details, see the [nanalogue-gui repository](https://github.com/sathish-t/nanalogue-gui).
