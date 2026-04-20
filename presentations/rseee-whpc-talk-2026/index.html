@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Conference Talk</title>
+
+    <style>
+      .reveal .slides section {
+        text-align: center;
+      }
+
+      .reveal h2 {
+        text-transform: none !important;
+        font-size: 1.35em;
+      }
+
+      .reveal .future-thoughts-body {
+        font-size: 0.78em;
+      }
+
+      .reveal .screenshot-31mar26 img {
+        max-width: 60%;
+      }
+
+      .reveal .screenshot-rna-sgnex-cut img {
+        max-width: 100%;
+      }
+
+      .reveal .rna-compare-row {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+        justify-content: center;
+      }
+
+      .reveal .rna-compare-row > div {
+        flex: 1 1 0;
+      }
+
+      .reveal .rna-compare-row img {
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+      }
+
+      .reveal .thank-you-columns {
+        columns: 2;
+        column-gap: 3rem;
+        display: inline-block;
+        text-align: left;
+        margin: 0 auto;
+      }
+
+      .reveal .thank-you-columns li {
+        break-inside: avoid;
+        margin-bottom: 0.25rem;
+      }
+
+      .reveal img[src*="images/logos.png"] {
+        max-width: 75%;
+      }
+
+      .reveal .footer-cta {
+        font-size: 0.8em;
+      }
+
+      .reveal .thank-you-columns {
+        font-size: 0.85em;
+      }
+
+      .reveal img[src*="images/full_features.png"] {
+        width: 150%;
+        max-width: none;
+        display: block;
+        margin-left: -25%;
+      }
+
+      .reveal .rna-coverage-plot img {
+        display: block;
+        margin-bottom: 0 !important;
+      }
+
+      .reveal .slide-caption {
+        font-size: 0.275em;
+        line-height: 1.4;
+        margin: 0 0 0.5em 0;
+        color: #555;
+      }
+
+    </style>
+    <script type="module" crossorigin src="./assets/index-CAUV4kty.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-Cpaz_rx5.css">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section data-markdown>
+          <script type="text/template">
+## Nanalogue-chat or how I developed an agent around my package using LLMs
+
+Talk to your genomics data in plain English!
+
+Sathish Thiyagarajan
+
+Nieduszynski group at the Earlham Institute
+
+---
+
+## LLMs impact on analysis
+
+- Lowers skill barrier to writing code
+- 'Unprepared' users manually approve code
+- Privacy, safety, security compromised due to this
+
+---
+
+## Chat workflow
+
+![Chat workflow](images/chat_workflow.png)
+
+---
+
+## Monty: an innovative Python interpreter
+
+- https://github.com/pydantic/monty
+- Can be accessed as a library
+- Written for running untrusted LLM-made code
+    - No imports, no filesystem access, no env vars
+    - <font color="blue">User supplies external functions</font>
+- Avoids problems like the following
+
+<pre><code data-trim class="language-python">
+>>> import dog
+>>> dog.woof() # Malicious, `rm -rf *`
+</code></pre>
+
+---
+
+## What is Nanalogue-gui?
+
+Sequencing data processing with AI chat features.
+
+- Inspect system prompts and tools in plain English
+- Run analyses on text and binary BAM data
+- Generate figures quickly
+
+---
+
+<div class="screenshot-31mar26">
+
+![Nanalogue GUI screenshot](images/screenshot_31mar26.png)
+
+</div>
+
+---
+
+## `/dump_llm_instructions`
+
+<iframe
+  src="supplementary_html/nanalogue-chat-2026-03-31-ac3ae8ab-3ffa-4e9a-8201-9913703278e4.html"
+  style="width: 100%; height: 70vh; border: 1px solid #bbb; border-radius: 10px; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);"
+></iframe>
+
+---
+
+## Plain-English prompt → published RNA-seq result
+
+Just describe the analysis in plain English.
+
+Generates code from scratch that counts spanning reads, computes coverage, and generates a plot.
+
+![coverage explanation](images/splicing_variants.png)
+
+---
+
+<div class="rna-compare-row">
+  <div class="screenshot-rna-sgnex-cut">
+
+  ![RNA-seq chat example](images/screenshot_rna_sgnex_09apr26_cut.png)
+
+  </div>
+
+  <div class="rna-coverage-plot">
+
+  ![Coverage plot](images/coverage_ydjc_test_3.svg)
+
+  <p class="slide-caption">nanalogue-chat output on HCT116 cells<br>Coverage plot generated directly from the chat workflow.</p>
+
+  ![SGNEx Jupyter notebook example](images/sgnex_jupyter_notebook_example.png)
+
+  <p class="slide-caption">Published notebook workflow on A549 cells<br>Comparable style of analysis from the SG-NEx IsoTools tutorial<br>https://github.com/GoekeLab/sg-nex-data/blob/master/docs/SG_NEx_IsoTools_tutorial.ipynb</p>
+
+  </div>
+</div>
+
+---
+
+## `/dump_llm_instructions`
+
+<iframe
+  src="supplementary_html/nanalogue-chat-2026-04-09-c5bd5109-5875-4e11-8ec7-60a7fd245991.html"
+  style="width: 100%; height: 70vh; border: 1px solid #bbb; border-radius: 10px; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);"
+></iframe>
+
+---
+
+## Thoughts for future
+
+<div class="future-thoughts-body">
+
+For tool builders:
+- Build custom functions/tools for LLMs
+    - So they access custom data or algorithms
+    - This also constrains inexperienced users
+- Then, just make a chat interface to the LLM
+- Allow bring your own LLM (privacy, interop)
+- Automate code generation and safe execution
+
+For tool users:
+- More complex stuff doable with no coding!
+- Driven to do more and more complex stuff.
+
+</div>
+
+---
+
+
+## Thank you
+
+<ul class="thank-you-columns">
+  <li>Angela Man</li>
+  <li>Daria Cuthbert</li>
+  <li>Charlotte Cannon</li>
+  <li>Lukasz Sitko</li>
+  <li>Eduardo de-La-Vega</li>
+  <li>Anna Rogers</li>
+  <li>Isabel Díez Santos</li>
+  <li>Nerea Murugarren-Garrido</li>
+  <li>Conrad Nieduszynski</li>
+  <li>NBI Research computing</li>
+</ul>
+
+![EI logos and funding logos](images/logos.png)
+
+<div class="footer-cta">Visit nanalogue.com for code or further info and more tools!</div>
+
+---
+
+## Find out more
+
+- Website: nanalogue.com
+- Docs and examples
+- Rust CLI, Node.js, Python, Docker
+
+![QR resources](images/qr-docs.png)
+
+
+          </script>
+        </section>
+      </div>
+    </div>
+
+  </body>
+</html>
