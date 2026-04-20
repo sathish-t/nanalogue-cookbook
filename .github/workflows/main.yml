@@ -7,37 +7,50 @@ on:
   push:
     branches: [ main ]
 
-# Permission can be added at job level or workflow level    
 permissions:
-      id-token: write   # This is required for requesting the JWT
-      contents: read    # This is required for actions/checkout
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   make_book_and_upload_to_s3:
+    name: Build and publish book
+    environment: production
+    permissions:
+      id-token: write   # This is required for requesting the JWT
+      contents: read    # This is required for actions/checkout
     runs-on: ubuntu-latest
+    env:
+      AWS_BUCKET: ${{ secrets.AWS_BUCKET }}
+      CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
     steps:
       - name: Git clone the repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98 # v5.0.0
+        with:
+          persist-credentials: false
       - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v5.1.1
+        uses: aws-actions/configure-aws-credentials@ec61189d14ec14c8efccab744f656cffd0e33f37 # v6.1.0
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: ${{ secrets.AWS_REGION }}
       # Install Rust and nanalogue CLI
       - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
+        run: rustup default stable
       - name: Install nanalogue CLI
         run: cargo install nanalogue --locked
       # Install Python and pynanalogue
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: '3.11'
       - name: Install pynanalogue, matplotlib
         run: pip3 install pynanalogue matplotlib
       # Install Node.js (needed for nanalogue-node and nanalogue-gui)
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version: '22'
       # Install system dependencies for markdown tests
@@ -56,7 +69,7 @@ jobs:
         run: python3 scripts/generate_python_docs.py
       # Install mdbook and mdbook-linkcheck
       - name: Setup mdbook
-        uses: peaceiris/actions-mdbook@v2
+        uses: peaceiris/actions-mdbook@c55832435624ab1e08e67c99dbd044c768855937 # v2.0.0
         with:
           mdbook-version: '0.4.36'
       - name: Install mdbook-linkcheck
@@ -68,12 +81,12 @@ jobs:
       # Delete all objects from S3 bucket
       - name: Delete all objects from S3 bucket
         run: |
-          aws s3 rm s3://${{ secrets.AWS_BUCKET }} --recursive
+          aws s3 rm "s3://${AWS_BUCKET}" --recursive
       # Sync book folder to S3 bucket root
       - name: Sync book to S3 bucket
         run: |
-          aws s3 sync book/html/ s3://${{ secrets.AWS_BUCKET }}/
+          aws s3 sync book/html/ "s3://${AWS_BUCKET}/"
       # Invalidate CloudFront cache to serve fresh content
       - name: Invalidate CloudFront cache
         run: |
-          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
+          aws cloudfront create-invalidation --distribution-id "$CLOUDFRONT_DISTRIBUTION_ID" --paths "/*"
