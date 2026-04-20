@@ -3,23 +3,12 @@
 Nanalogue includes `nanalogue_sim_bam`, a tool for creating synthetic BAM files with modifications.
 This is useful for testing, learning, and benchmarking.
 
-## Basic Usage
+## Basic Usage & Configuration Structure
 
 Create a JSON configuration file describing your desired data, then run:
 
 ```bash
-nanalogue_sim_bam config.json output.bam output.fasta
-```
-
-This produces:
-- A BAM file with simulated reads and modification tags
-- A FASTA file with the reference contigs
-
-## Configuration Structure
-
-All configurations follow this basic structure:
-
-```json
+cat > config.json << 'EOF'
 {
   "contigs": {
     "number": 3,
@@ -41,7 +30,16 @@ All configurations follow this basic structure:
     }
   ]
 }
+EOF
+nanalogue_sim_bam config.json output.bam output.fasta
 ```
+
+This produces:
+- A BAM file with simulated reads and modification tags
+- A FASTA file with the reference contigs
+
+All config files follow the basic structure shown above.
+Further details follow.
 
 ### Contigs Section
 
