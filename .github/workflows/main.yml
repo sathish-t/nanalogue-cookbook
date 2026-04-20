@@ -69,7 +69,7 @@ jobs:
         run: python3 scripts/generate_python_docs.py
       # Install mdbook and mdbook-linkcheck
       - name: Setup mdbook
-        uses: peaceiris/actions-mdbook@c55832435624ab1e08e67c99dbd044c768855937 # v2.0.0
+        uses: peaceiris/actions-mdbook@ee69d230fe19748b7abf22df32acaa93833fad08 # v2.0.0
         with:
           mdbook-version: '0.4.36'
       - name: Install mdbook-linkcheck
