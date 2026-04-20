@@ -8,6 +8,17 @@ to extract and process this information. This repository illustrates nanalogue's
 commands. The site generated from this repository can be seen [here](https://www.nanalogue.com).
 These materials are under development.
 
+In addition to the main mdBook site, this repository may also publish standalone
+static presentations at their own URL paths. For example, the Reveal.js talk deck
+is deployed at [/rseee-whpc-talk-2026/](https://www.nanalogue.com/rseee-whpc-talk-2026/).
+Because that presentation is deployed separately from the mdBook source tree, the
+book's link checker is configured to ignore that path.
+
+Reveal.js is a presentation framework in Javascript, see [here](https://revealjs.com)
+and [here](https://github.com/hakimel/reveal.js). We may have bundled Reveal.js javascript
+files with a standalone static presentation in our website.
+Reveal.js has been distributed under the [MIT license](https://github.com/hakimel/reveal.js/LICENSE).
+
 For contributors, see [INSTRUCTIONS.md](INSTRUCTIONS.md) for documentation on the automated testing and generation systems.
 
 # Acknowledgments
