@@ -86,6 +86,10 @@ jobs:
       - name: Sync book to S3 bucket
         run: |
           aws s3 sync book/html/ "s3://${AWS_BUCKET}/"
+      # Sync presentation to its own URL prefix
+      - name: Sync talk presentation to S3 bucket
+        run: |
+          aws s3 sync presentations/rseee-whpc-talk-2026/ "s3://${AWS_BUCKET}/rseee-whpc-talk-2026/"
       # Invalidate CloudFront cache to serve fresh content
       - name: Invalidate CloudFront cache
         run: |

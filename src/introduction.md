@@ -1,6 +1,6 @@
 # Introduction
 
-Nanalogue = *N*ucleic Acid *Analogue* 
+Nanalogue = *N*ucleotide and *Analogue* 
 
 A common pain point in the genomics community is that BAM files are information-dense
 which makes it difficult to gain insight from them. Nanalogue hopes to make it easy
@@ -18,6 +18,11 @@ using artificial data created using parameters defined by you.
 
 This documentation site is under active development.
 
+## Talks on nanalogue
+
+See [RSEEE WHPC Talk 2026 presentation](/rseee-whpc-talk-2026/) for a slide-deck version of the
+AI chat features of the `nanalogue-gui` project.
+
 ## Usage
 
 This book is divided into two parts, based on two out of the following three ways to use
@@ -29,7 +34,7 @@ nanalogue:
   If you are a rust developer looking to use nanalogue as a rust library,
   please head over to [docs.rs](https://docs.rs/nanalogue/latest/nanalogue_core/).
 
-Nanalogue is also available in other forms:
+Nanalogue is also available in the following forms. See [installation](#installation) below to learn how to install them.
 - as a [Node.js package](https://github.com/sathish-t/nanalogue-node) for use in JavaScript/TypeScript projects.
 - as a [GUI application](https://github.com/sathish-t/nanalogue-gui) for those who prefer a graphical interface.
 
